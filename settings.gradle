@@ -14,3 +14,9 @@ dependencyResolutionManagement {
 }
 rootProject.name = "FYPapp"
 include ':app'
+
+include ':java'
+include ':java'
+include ':java'
+
+include ':ocv'
