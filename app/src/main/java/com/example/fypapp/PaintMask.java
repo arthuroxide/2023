@@ -20,12 +20,14 @@ import androidx.annotation.Nullable;
 
 public class PaintMask extends View {
 
-    public static ArrayList<Path> pathList= new ArrayList<Path>();
+    public static ArrayList<Path> pathList= new ArrayList<>();
     public static ArrayList<Integer> colorList= new ArrayList<>();
     public static int brushColor= Color.WHITE;
     public ViewGroup.LayoutParams params;
+
     private Bitmap mask;
     private Canvas canvas;
+
 
     public PaintMask(Context context, @Nullable AttributeSet attrs){
         super(context, attrs);
@@ -51,12 +53,13 @@ public class PaintMask extends View {
      paint.setColor(brushColor);
      paint.setStyle(Paint.Style.STROKE);
      paint.setStrokeJoin(Paint.Join.ROUND);
-     paint.setStrokeWidth(8f);
-     params= new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+     paint.setStrokeWidth(20f);
+     params= new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent e){
+
         float x= e.getX();
         float y= e.getY();
         switch (e.getAction()){
@@ -90,7 +93,16 @@ public class PaintMask extends View {
         this.setBackgroundColor(Color.BLACK);
         this.draw(canvas);
         Log.i("draw","function");
-        return mask;
+
+//then create a copy of bitmap bmp1 into bmp2
+
+        return mask.copy(mask.getConfig(), true);
     }
 
+
+    public Bitmap getNoBlackMask() {
+        this.draw(canvas);
+        Log.i("origin","reward");
+        return mask.copy(mask.getConfig(), true);
+    }
 }
