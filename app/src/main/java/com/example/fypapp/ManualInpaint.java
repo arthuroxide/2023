@@ -25,12 +25,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.fypapp.PaintMask;
@@ -57,6 +60,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ManualInpaint extends AppCompatActivity {
     PaintMask imageview;
@@ -71,7 +76,7 @@ public class ManualInpaint extends AppCompatActivity {
     private static final int PICK_IMAGE = 100;
     Drawable originstream;
     Mat origMat, maskMat, destMat;
-
+    private ProgressBar progressBar;
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -109,10 +114,12 @@ public class ManualInpaint extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_inpaint);
+
         imageview = findViewById(R.id.imagecanvas);
         builder = new AlertDialog.Builder(this);
         Intent getImage = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         galleryActivityResultLauncher.launch(getImage);
+
     }
     public void saveInpaint(View button){
         Bitmap emptyBitmap = Bitmap.createBitmap(resultBitmap.getWidth(), resultBitmap.getHeight(), resultBitmap.getConfig());
@@ -153,8 +160,11 @@ public class ManualInpaint extends AppCompatActivity {
         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
         String picturePath = cursor.getString(columnIndex);
         cursor.close();
+
         return picturePath;
     }
+
+
 
 
     private final ActivityResultLauncher<Intent> galleryActivityResultLauncher = registerForActivityResult(
@@ -208,8 +218,8 @@ public class ManualInpaint extends AppCompatActivity {
         brushColor = paint.getColor();
         path = new Path();
     }
+    /**
     private void calculateAndLaunch(){
-
         if((mask.getHeight() !=  original.getHeight())|| (mask.getWidth() != original.getWidth())){
             Log.w("Warning:", "mask wxh: "+mask.getWidth()+"x"+mask.getHeight()+"   original wxh:"+original.getWidth()+"x"+original.getHeight());
         }else{
@@ -234,16 +244,56 @@ public class ManualInpaint extends AppCompatActivity {
 
         createResultLayout();
 
-        //Intent goToResultActivity= new Intent(this, Result.class);
-        //goToResultActivity.putExtra("imageUri", rImageUri.toString());
-        //startActivity(goToResultActivity);
     }
 
     private void createResultLayout(){
         setContentView(R.layout.activity_result);
         resultView= findViewById(R.id.result);
         resultView.setImageBitmap(resultBitmap);
+    }*/
+
+    private void calculateAndLaunch2(){
+
+        setContentView(R.layout.activity_result);
+        progressBar= findViewById(R.id.progress_bar);
+        resultView= findViewById(R.id.result);
+        ExecutorService calculateInpaint = Executors.newSingleThreadExecutor();
+        calculateInpaint.execute(new Runnable() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
+                });
+                Utils.bitmapToMat(original, origMat);
+                Utils.bitmapToMat(mask, maskMat);
+
+                Imgproc.cvtColor(origMat, origMat, Imgproc.COLOR_RGBA2RGB);//cha
+                Imgproc.cvtColor(origMat, origMat, Imgproc.COLOR_RGB2XYZ);//cha
+                Imgproc.cvtColor(maskMat, maskMat, Imgproc.COLOR_RGBA2RGB);//cha
+                Imgproc.cvtColor(maskMat, maskMat, Imgproc.COLOR_RGB2GRAY);//cha
+
+                Photo.inpaint(origMat,maskMat,destMat, 30, Photo.INPAINT_TELEA);
+                resultBitmap= Bitmap.createBitmap(original.getWidth(), original.getHeight(), Bitmap.Config.ARGB_8888);
+                Imgproc.cvtColor(destMat,destMat,Imgproc.COLOR_XYZ2RGB);
+                Utils.matToBitmap(destMat, resultBitmap);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                        if(resultBitmap != null){
+                            resultView.setImageBitmap(resultBitmap);
+                        }
+                    }
+                });
+            }
+        });
+
+
     }
+
 
     public Bitmap getScaledOrig() {
         pathList.clear();
@@ -280,7 +330,7 @@ public class ManualInpaint extends AppCompatActivity {
 
 
                         try{
-                            calculateAndLaunch();
+                            calculateAndLaunch2();
                         }catch(Exception e){
                             e.printStackTrace();
                         }
