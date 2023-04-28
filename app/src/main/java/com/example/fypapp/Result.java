@@ -15,6 +15,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.amplifyframework.AmplifyException;
+import com.amplifyframework.api.aws.AWSApiPlugin;
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
+import com.amplifyframework.core.Amplify;
+
 import java.io.OutputStream;
 import java.util.Objects;
 import java.util.UUID;
@@ -26,6 +31,16 @@ public class Result extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            // Add these lines to add the `AWSApiPlugin` and `AWSCognitoAuthPlugin`
+            Amplify.addPlugin(new AWSApiPlugin());
+            Amplify.addPlugin(new AWSCognitoAuthPlugin());
+            Amplify.configure(getApplicationContext());
+
+            Log.i("Connecting to Amplify", "Initialized Amplify.");
+        } catch (AmplifyException error) {
+            Log.e("=Amplify Connection Failed", "Could not initialize Amplify.", error);
+        }
         setContentView(R.layout.activity_result);
         resultView= findViewById(R.id.result);
         Bundle extras = getIntent().getExtras();

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Instruction">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentStart="true"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/ic_baseline_arrow_back_24"
+                android:onClick="backToMainActivity" />
+
+
+            <androidx.legacy.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="Instruction"
+                android:textColor="@color/purple_500"
+                android:textSize="30sp"/>
+
+            <androidx.legacy.widget.Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+            <androidx.legacy.widget.Space
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="20dp"
+                />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/constraintLayout4"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:text="Automatic Inpaint with YOLO\n\nWhen Automatic Inpainting icon is pressed, the activity will change from the main activity into the AutoInpaint activity, before the activity is launched, the application launches the device’s gallery and askes the user to provide an image for the Activity to continue its calculation. After that, if the image contains no image detected, the activity will finish and go back to the main activity, with a Toast indicating that the image does not have anything that is detected as an object. If there is an image, then the activity will continue and show the image in the layout\n\nManual inpainting with Android Canvas\n\nThe manual inpaint with canvas function will be an alternative to the auto inpaint function where some image might not detect object entities or anything else. Which comes to the user to draw it on the image to create a custom mask for the application to do inpainting. Same as auto inpainting function, the manual inpainting function first ask the user to submit a photo into the application, after the submission of the image, the layout will change, if no image is present, the activity will stay put with no image on the canvas. "/>
+    </ScrollView>
+</RelativeLayout>

@@ -47,14 +47,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(toAlbumPage);}
     public void toCameraActivity(View button) {
         //start QR activity
-        Intent toCameraPage= new Intent(this, CameraActivity.class);
+        Intent toCameraPage= new Intent(this, CameraBaseActivity.class);
         startActivity(toCameraPage);}
 
-    /**
+
     public void toInstructionActivity(View button) {
         //start QR activity
-        Intent toScannerPage= new Intent(this, AutoInpaint.class);
-        startActivity(toScannerPage);}
+        Intent toInstruction= new Intent(this, Instruction.class);
+        startActivity(toInstruction);}
+    /**
     public void toGithubActivity(View button) {
         //start QR activity
         Intent toScannerPage= new Intent(this, AutoInpaint.class);

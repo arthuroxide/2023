@@ -22,6 +22,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -30,6 +31,7 @@ import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.TimingLogger;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -267,6 +269,10 @@ public class ManualInpaint extends AppCompatActivity {
                         progressBar.setVisibility(View.VISIBLE);
                     }
                 });
+
+
+
+
                 Utils.bitmapToMat(original, origMat);
                 Utils.bitmapToMat(mask, maskMat);
 
@@ -276,9 +282,11 @@ public class ManualInpaint extends AppCompatActivity {
                 Imgproc.cvtColor(maskMat, maskMat, Imgproc.COLOR_RGB2GRAY);//cha
 
                 Photo.inpaint(origMat,maskMat,destMat, 30, Photo.INPAINT_TELEA);
+
                 resultBitmap= Bitmap.createBitmap(original.getWidth(), original.getHeight(), Bitmap.Config.ARGB_8888);
                 Imgproc.cvtColor(destMat,destMat,Imgproc.COLOR_XYZ2RGB);
                 Utils.matToBitmap(destMat, resultBitmap);
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
