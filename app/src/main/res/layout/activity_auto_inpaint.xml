@@ -9,20 +9,18 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/constraintLayout3"
+
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:id="@+id/result2"
+            android:id="@+id/inputPic"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
             android:contentDescription="@null"
-            android:src="@drawable/test"
+            android:layout_above="@id/constraintLayout3"
             />
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminateTint="@color/purple_500"
-            android:layout_centerInParent="true"/>
+
+
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,7 +49,7 @@
                     android:id="@+id/button"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:background="@drawable/ic_baseline_arrow_back_24"
+                    android:background="@drawable/baseline_arrow_back_24"
                     android:onClick="backToMainActivity" />
 
                 <androidx.legacy.widget.Space
@@ -72,7 +70,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@drawable/ic_baseline_check_24"
-                    android:onClick="saveInpaint" />
+                    android:onClick="proceedImage" />
 
                 <androidx.legacy.widget.Space
                     android:layout_width="0dp"
@@ -81,6 +79,16 @@
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/detect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@id/constraintLayout3"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_baseline_camera_enhance_24"
+        android:onClick="detectImage"/>
 
 
 </RelativeLayout>

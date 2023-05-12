@@ -26,30 +26,57 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_9
         targetCompatibility JavaVersion.VERSION_1_9
     }
+    aaptOptions {
+        noCompress "tflite"
+        noCompress "lite"
+    }
+
     buildFeatures {
         viewBinding true
+        mlModelBinding true
     }
 }
 
 dependencies {
+    implementation 'org.tensorflow:tensorflow-lite-support:0.1.0'
+    //implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0'
 
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
-    implementation project(path: ':ocv')
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
     implementation 'com.amplifyframework:aws-api:2.5.0'
     implementation 'com.amplifyframework:aws-auth-cognito:2.5.0'
+    implementation project(':ocv')
 
-    implementation 'org.tensorflow:tensorflow-lite-task-vision:0.4.0'
-    implementation 'org.tensorflow:tensorflow-lite-gpu-delegate-plugin:0.4.0'
-    implementation 'org.tensorflow:tensorflow-lite-gpu:2.9.0'
+
+    implementation 'org.tensorflow:tensorflow-lite-metadata:0.1.0-rc1'
+    implementation 'org.tensorflow:tensorflow-lite:2.2.0'
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.2.0'
+
+    implementation 'org.tensorflow:tensorflow-lite-task-vision:0.1.0'
+    implementation 'org.tensorflow:tensorflow-lite-task-text:0.1.0'
 
 
 
     implementation 'androidx.core:core-splashscreen:1.0.0'
+
+    //auto
+    implementation 'com.google.code.gson:gson:2.8.6'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+    androidTestImplementation 'com.google.truth:truth:1.0.1'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
+    //auto
+
+    def cameraxVersion = "1.1.0-alpha05"
+    implementation "androidx.camera:camera-core:${cameraxVersion}"
+    implementation "androidx.camera:camera-camera2:${cameraxVersion}"
+    implementation "androidx.camera:camera-lifecycle:${cameraxVersion}"
+    // CameraX View class
+    implementation 'androidx.camera:camera-view:1.0.0-alpha25'
 }

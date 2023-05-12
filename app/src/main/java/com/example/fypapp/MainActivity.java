@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(toAlbumPage);}
     public void toCameraActivity(View button) {
         //start QR activity
-        Intent toCameraPage= new Intent(this, CameraBaseActivity.class);
+        Intent toCameraPage= new Intent(this, CameraActivity.class);
         startActivity(toCameraPage);}
 
 
